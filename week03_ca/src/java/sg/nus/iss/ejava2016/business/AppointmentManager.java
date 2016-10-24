@@ -5,10 +5,14 @@
  */
 package sg.nus.iss.ejava2016.business;
 
+import java.util.List;
+import java.util.Optional;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import sg.nus.iss.ejava2016.model.Appointment;
+import sg.nus.iss.ejava2016.model.People;
 
 /**
  *
@@ -21,6 +25,15 @@ public class AppointmentManager {
     
     public void add(Appointment app){
         em.persist(app);
+    }
+
+    public Optional<List<Appointment>> findByPid(String pid) {
+        
+        TypedQuery<Appointment> query = em.createNamedQuery(
+                "People.findAppointmentByPid", Appointment.class);
+        query.setParameter("pid", pid);
+        
+        return(Optional.ofNullable(query.getResultList()));
     }
     
 }

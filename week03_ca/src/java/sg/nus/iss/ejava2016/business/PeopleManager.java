@@ -5,11 +5,13 @@
  */
 package sg.nus.iss.ejava2016.business;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import sg.nus.iss.ejava2016.model.People;
 
 /**
@@ -23,14 +25,19 @@ public class PeopleManager {
     public void add(People people){
         String pid = UUID.randomUUID().toString().substring(0, 8);
         people.setPid(pid);
-        System.out.println("====> pid = " + pid);
         em.persist(people);
-        
-        //People opps = find("0e4d8b2c").get();
-        //System.out.println("name "+opps.getName());
     }
     
     public Optional<People> find(final String pid){
         return(Optional.ofNullable(em.find(People.class, pid)));
+    }
+    
+    public Optional<List<People>> findByEmail(final String email){
+        
+        TypedQuery<People> query = em.createNamedQuery(
+                "People.findByEmail", People.class);
+        query.setParameter("email", email);
+        
+        return(Optional.ofNullable(query.getResultList()));
     }
 }
