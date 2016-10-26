@@ -20,6 +20,7 @@ import sg.nus.iss.ejava2016.model.People;
  */
 @Stateless
 public class PeopleManager {
+    
     @PersistenceContext private EntityManager em;
     
     public void add(People people){

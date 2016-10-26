@@ -56,7 +56,7 @@ public class AppointmentResource {
         if(!opt.isPresent()){
             FacesMessage m = new FacesMessage("Team not found");
             FacesContext.getCurrentInstance().addMessage(null, m);
-            return Response.noContent().build();
+            return Response.noContent().entity("Team not found").build();
         }
         //Set Person
         appointment.setPid(opt.get().get(0));
@@ -73,7 +73,7 @@ public class AppointmentResource {
     @Path("{email}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response verify(@PathParam("email") String email){
-        System.out.println("email >>>>> " + email);
+        System.out.println("appointment email >>>>> " + email);
         //Find through email
         Optional<List<People>> optPeople = peopleManager.findByEmail(email);
         

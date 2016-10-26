@@ -40,17 +40,20 @@ public class PeopleResource {
     @POST
     @Consumes("application/x-www-form-urlencoded")
     public Response add(MultivaluedMap<String,String> formData){
+        
         People people=new People();
         people.setName(formData.getFirst("name"));
         people.setEmail(formData.getFirst("email"));
+        
         peopleManager.add(people);
+        
         return(Response.ok().build());
     }
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response verify(@QueryParam("email") String email){
-        System.out.println("email >>>>> " + email);
+        System.out.println("people email >>>>> " + email);
         //Find through email
         Optional<List<People>> optPeople = peopleManager.findByEmail(email);
         
@@ -61,21 +64,6 @@ public class PeopleResource {
                     .build());
         }
         
-        Optional<List<Appointment>> optAppointment = appointmentManager.findByPid(optPeople.get().get(0).getPid());
-        
-        if(!optAppointment.isPresent()){
-            return (Response
-                    .status(Response.Status.NOT_FOUND)
-                    .entity("Not found: email=" + email)
-                    .build());
-        }
-        
-        JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
-        
-        optAppointment.get().stream()
-                .map(c -> {return(c.toJSON());})
-                .forEach(j -> {arrBuilder.add(j);});
-        
-        return(Response.ok(arrBuilder.build()).build());
+        return(Response.ok().build());
     }
 }
