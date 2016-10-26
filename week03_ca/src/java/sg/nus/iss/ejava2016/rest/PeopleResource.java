@@ -51,7 +51,7 @@ public class PeopleResource {
     public Response verify(@QueryParam("email") String email){
         System.out.println("people email >>>>> " + email);
         //Find through email
-        Optional<List<People>> optPeople = peopleManager.findByEmail(email);
+        Optional<People> optPeople = peopleManager.findByEmail(email);
         
         if(!optPeople.isPresent()){
             return (Response
