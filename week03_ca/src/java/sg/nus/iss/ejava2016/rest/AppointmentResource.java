@@ -77,7 +77,7 @@ public class AppointmentResource {
         //Find through email
         Optional<List<People>> optPeople = peopleManager.findByEmail(email);
         
-        if(!optPeople.isPresent()){
+        if(!optPeople.isPresent() || optPeople.get().isEmpty()){
             return (Response
                     .status(Response.Status.NOT_FOUND)
                     .entity("Not found: email=" + email)
