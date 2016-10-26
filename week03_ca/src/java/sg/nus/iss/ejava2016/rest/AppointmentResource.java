@@ -25,9 +25,14 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.CacheControl;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.EntityTag;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 import sg.nus.iss.ejava2016.business.AppointmentManager;
 import sg.nus.iss.ejava2016.business.PeopleManager;
 import sg.nus.iss.ejava2016.model.Appointment;
@@ -72,7 +77,7 @@ public class AppointmentResource {
     @GET
     @Path("{email}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response verify(@PathParam("email") String email){
+    public Response verify(@PathParam("email") String email, @Context Request request){
         System.out.println("appointment email >>>>> " + email);
         //Find through email
         Optional<List<People>> optPeople = peopleManager.findByEmail(email);
@@ -99,6 +104,31 @@ public class AppointmentResource {
                 .map(c -> {return(c.toJSON());})
                 .forEach(j -> {arrBuilder.add(j);});
         
-        return(Response.ok(arrBuilder.build()).build());
+        // Enable Cache Control
+        int hashSum = 0;
+        
+        for(Appointment a : optAppointment.get()){
+            //System.out.println(a.getApptId()+" - "+a.hashCode());
+            hashSum += a.hashCode();
+        }
+        
+        System.out.println("hashsum >>>>"+hashSum);
+        
+        CacheControl cc = new CacheControl();
+        cc.setNoCache(true);
+        
+        EntityTag etag = new EntityTag(Integer.toString(hashSum));
+        ResponseBuilder builder = request.evaluatePreconditions(etag);
+        
+        if(builder != null)
+            return Response.notModified().build();
+        
+        // cached resource did change -> serve updated content
+        builder = Response.ok(arrBuilder.build());
+        builder.tag(etag);
+        builder.cacheControl(cc);
+        builder.expires(new Date(System.currentTimeMillis() + 3000));
+        return(builder.build());
+        //return(Response.ok(arrBuilder.build()).build());
     }
 }
