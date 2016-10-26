@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.ws.rs.Consumes;
@@ -54,8 +52,6 @@ public class AppointmentResource {
         Optional<List<People>> opt = peopleManager.findByEmail(formData.getFirst("email"));
         
         if(!opt.isPresent()){
-            FacesMessage m = new FacesMessage("Team not found");
-            FacesContext.getCurrentInstance().addMessage(null, m);
             return Response.noContent().entity("Team not found").build();
         }
         //Set Person
