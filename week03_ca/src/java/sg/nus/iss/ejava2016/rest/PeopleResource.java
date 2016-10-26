@@ -51,9 +51,9 @@ public class PeopleResource {
     public Response verify(@QueryParam("email") String email){
         System.out.println("people email >>>>> " + email);
         //Find through email
-        Optional<People> optPeople = peopleManager.findByEmail(email);
+        Optional<List<People>> optPeople = peopleManager.findByEmail(email);
         
-        if(!optPeople.isPresent()){
+        if(!optPeople.isPresent() || optPeople.get().isEmpty()){
             return (Response
                     .status(Response.Status.NOT_FOUND)
                     .entity("Not found: email=" + email)

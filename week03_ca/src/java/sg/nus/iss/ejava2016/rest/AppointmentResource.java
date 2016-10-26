@@ -51,7 +51,7 @@ public class AppointmentResource {
         Appointment appointment=new Appointment();
         
         //Find through email
-        Optional<People> opt = peopleManager.findByEmail(formData.getFirst("email"));
+        Optional<List<People>> opt = peopleManager.findByEmail(formData.getFirst("email"));
         
         if(!opt.isPresent()){
             FacesMessage m = new FacesMessage("Team not found");
@@ -59,7 +59,7 @@ public class AppointmentResource {
             return Response.noContent().entity("Team not found").build();
         }
         //Set Person
-        appointment.setPid(opt.get());
+        appointment.setPid(opt.get().get(0));
         // Set Description
         appointment.setDescription(formData.getFirst("description"));
         // Set Date
@@ -75,7 +75,7 @@ public class AppointmentResource {
     public Response verify(@PathParam("email") String email, @Context Request request){
         System.out.println("appointment email >>>>> " + email);
         //Find through email
-        Optional<People> optPeople = peopleManager.findByEmail(email);
+        Optional<List<People>> optPeople = peopleManager.findByEmail(email);
         
         if(!optPeople.isPresent()){
             return (Response
@@ -84,7 +84,7 @@ public class AppointmentResource {
                     .build());
         }
         
-        Optional<List<Appointment>> optAppointment = appointmentManager.findByPid(optPeople.get().getPid());
+        Optional<List<Appointment>> optAppointment = appointmentManager.findByPid(optPeople.get().get(0).getPid());
         
         if(!optAppointment.isPresent()){
             return (Response

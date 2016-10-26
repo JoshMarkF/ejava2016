@@ -33,12 +33,12 @@ public class PeopleManager {
         return(Optional.ofNullable(em.find(People.class, pid)));
     }
     
-    public Optional<People> findByEmail(final String email){
+    public Optional<List<People>> findByEmail(final String email){
         
         TypedQuery<People> query = em.createNamedQuery(
                 "People.findByEmail", People.class);
         query.setParameter("email", email);
         
-        return(Optional.ofNullable(query.getSingleResult()));
+        return(Optional.ofNullable(query.getResultList()));
     }
 }
