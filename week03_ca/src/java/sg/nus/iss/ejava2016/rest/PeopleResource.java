@@ -9,9 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Named;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,7 +20,6 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import sg.nus.iss.ejava2016.business.AppointmentManager;
 import sg.nus.iss.ejava2016.business.PeopleManager;
-import sg.nus.iss.ejava2016.model.Appointment;
 import sg.nus.iss.ejava2016.model.People;
 
 /**

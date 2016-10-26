@@ -5,7 +5,6 @@
  */
 package sg.nus.iss.ejava2016.model;
 
-import sg.nus.iss.ejava2016.model.Appointment;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;

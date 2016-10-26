@@ -12,7 +12,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import sg.nus.iss.ejava2016.model.Appointment;
-import sg.nus.iss.ejava2016.model.People;
 
 /**
  *
