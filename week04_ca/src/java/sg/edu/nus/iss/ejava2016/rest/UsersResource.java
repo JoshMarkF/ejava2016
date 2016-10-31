@@ -48,9 +48,9 @@ public class UsersResource {
     public Response login(@QueryParam("userid") String userid){
         System.out.println("userid >>>>> " + userid);
         //Find through email
-        Optional<List<Users>> optPeople = userManager.findByUserid(userid);
+        Optional<Users> optUsers = userManager.find(userid);
         
-        if(!optPeople.isPresent() || optPeople.get().isEmpty()){
+        if(!optUsers.isPresent()){
             return (Response
                     .status(Response.Status.NOT_FOUND)
                     .entity("Not found: userid=" + userid)

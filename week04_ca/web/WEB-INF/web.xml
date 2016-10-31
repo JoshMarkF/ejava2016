@@ -21,4 +21,19 @@
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/faces/login.xhtml</form-login-page>
+            <form-error-page/>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>valid</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>invalid</role-name>
+    </security-role>
 </web-app>
