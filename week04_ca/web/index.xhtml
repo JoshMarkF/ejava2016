@@ -2,14 +2,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h2>Welcome!</h2>
-   <hr />
-   <h:form>
-       <h:link value="Register" outcome="register" />
-       <h:link value="Login" outcome="login" />
-   </h:form>
+    <h:form id="indexForm">
+        <h2>Please login</h2>
+        
+        <h:panelGrid columns="2">
+            
+            Username: <h:inputText value="#{users.userid}" id="userid"/>
+            
+            Password: <h:inputSecret value="#{users.password}" id="password"/>
+        
+        <h:panelGroup/>
+
+        <h:commandButton value="Register" action="#{usersResource.add()}"/>
+            
+        <h:commandButton value="Login" action="#{usersResource.login()}"/>    
+        
+        </h:panelGrid>
+        
+        <h:messages/>
+    </h:form>
 </html>
+
 
