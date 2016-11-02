@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package sg.edu.nus.iss.ejava2016.Model;
+package sg.edu.nus.iss.ejava2016.model.auth;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
@@ -19,15 +19,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  *
- * @author Joshua
+ * @author sanja
  */
 @Entity
 @Table(name = "users", catalog = "authdb", schema = "")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u")
-    , @NamedQuery(name = "Users.findByUserid", query = "SELECT u FROM Users u WHERE u.userid = :userid")
-    , @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")})
+    @NamedQuery(name = "Users.findAll", query = "SELECT u FROM Users u"),
+    @NamedQuery(name = "Users.findByUserid", query = "SELECT u FROM Users u WHERE u.userid = :userid"),
+    @NamedQuery(name = "Users.findByPassword", query = "SELECT u FROM Users u WHERE u.password = :password")})
 public class Users implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -93,7 +93,7 @@ public class Users implements Serializable {
 
     @Override
     public String toString() {
-        return "sg.edu.nus.iss.ejava2016.Model.Users[ userid=" + userid + " ]";
+        return "sg.edu.nus.iss.ejava2016.model.Users[ userid=" + userid + " ]";
     }
     
 }

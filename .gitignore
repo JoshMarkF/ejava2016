@@ -3,3 +3,14 @@
 /week04_ca/nbproject/private/
 /week04_ca/build/
 /week04_ca/dist/
+week03_ca/nbproject/ant-deploy.xml
+week03_ca/nbproject/ant-deploy.xml
+week03_ca/nbproject/private/private.properties
+week03_ca/web/WEB-INF/glassfish-resources.dtd
+week04_ca/build.xml
+week04_ca/nbproject/build-impl.xml
+week04_ca/nbproject/genfiles.properties
+week04_ca/nbproject/project.properties
+week04_ca/nbproject/project.xml
+week04_ca/nbproject/rest-build.xml
+week04_ca/src/conf/persistence.xml

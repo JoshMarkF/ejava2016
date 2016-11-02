@@ -21,19 +21,32 @@
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
+    <security-constraint>
+        <display-name>Constraint1</display-name>
+        <web-resource-collection>
+            <web-resource-name>jsf-secure</web-resource-name>
+            <description/>
+            <url-pattern>/faces/secure/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>DEFAULT</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
     <login-config>
         <auth-method>FORM</auth-method>
+        <realm-name>authdb-realm</realm-name>
         <form-login-config>
-            <form-login-page>/faces/index.xhtml</form-login-page>
+            <form-login-page>/faces/login.xhtml</form-login-page>
             <form-error-page>/faces/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
     <security-role>
         <description/>
-        <role-name>valid</role-name>
-    </security-role>
-    <security-role>
-        <description/>
-        <role-name>invalid</role-name>
+        <role-name>DEFAULT</role-name>
     </security-role>
 </web-app>
