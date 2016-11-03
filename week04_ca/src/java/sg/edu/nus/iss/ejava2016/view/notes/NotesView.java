@@ -5,17 +5,19 @@
  */
 package sg.edu.nus.iss.ejava2016.view.notes;
 
+import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.annotation.security.DeclareRoles;
 import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.enterprise.context.RequestScoped;
-import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import sg.edu.nus.iss.ejava2016.manager.notes.NotesManager;
 import sg.edu.nus.iss.ejava2016.model.notes.Notes;
 import sg.edu.nus.iss.ejava2016.model.notes.NotesPK;
+import sg.edu.nus.iss.ejava2016.utils.SessionUtils;
 
 /**
  *
@@ -67,14 +69,18 @@ public class NotesView {
     }
     
     @PostConstruct
-    public void init(){
-        FacesContext.getCurrentInstance().getExternalContext().getRemoteUser();
+    public void init(){                
+        setUsername(SessionUtils.getSession()
+                .getAttribute("username").toString());
     }
     
-    public String add(){
+    public void add() throws IOException{
+        
+        NotesPK notesPk = new NotesPK();
+        notesPk.setUserid(username);
         
         Notes note = new Notes();
-        note.setNotesPK(new NotesPK(null, "qaz"));
+        note.setNotesPK(notesPk);
         note.setTitle(title);
         note.setCategory(category);
         note.setCreated(new Date());
@@ -82,6 +88,16 @@ public class NotesView {
         
         notesManager.add(note);
         
-        return ("notesmenu");
+        SessionUtils.getExternalContext()
+                .redirect(SessionUtils.getRequestContextPath()
+                        +"/faces/secure/notes/notesmenu.xhtml?faces-redirect=true");
+    }
+    
+    public List<Notes> getAllNotes(){
+        return (notesManager.findAll().get());
+    }
+    
+    public List<Notes> getUserNotes(){
+        return (notesManager.findByUserId(username).get());
     }
 }

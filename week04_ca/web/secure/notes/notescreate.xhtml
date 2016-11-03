@@ -13,12 +13,11 @@
                 <h:outputText value="Role: DEFAULT" rendered="#{request.isUserInRole('DEFAULT')}"/>
                 <h:commandLink value="Logout" action="#{usersView.logout()}"/>
             </h:panelGrid>
-            <h2>New Notes</h2>
+            <h2>Create Note</h2>
             <h:panelGrid columns="2">
                 <h:outputText value="Title:"/> 
                 <h:inputText value="#{notesView.title}"/>
                 <h:outputText value="Category:"/> 
-                <!-- h:inputText value="#{notesView.category}"/ -->
                 <h:selectOneMenu value="#{notesView.category}">
                     <f:selectItem itemValue="Social" itemLabel="Social" />
                     <f:selectItem itemValue="ForSale" itemLabel="For Sale" />
@@ -27,7 +26,7 @@
                 </h:selectOneMenu>
                 <h:outputText value="Description:"/> 
                 <h:inputText value="#{notesView.description}"/>
-                <h:panelGroup/>
+                <h:commandLink value="Back" action="notesmenu"/>
                 <h:commandButton value="Create Note" action="#{notesView.add()}"/>
             </h:panelGrid>
         </h:form>

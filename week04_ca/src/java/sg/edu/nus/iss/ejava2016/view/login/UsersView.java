@@ -7,23 +7,16 @@ package sg.edu.nus.iss.ejava2016.view.login;
 
 import java.io.IOException;
 import java.io.Serializable;
-import java.io.UnsupportedEncodingException;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.annotation.security.RolesAllowed;
-import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
@@ -31,11 +24,10 @@ import javax.transaction.NotSupportedException;
 import javax.transaction.RollbackException;
 import javax.transaction.SystemException;
 import javax.transaction.UserTransaction;
-import org.apache.xml.security.utils.Base64;
-import sg.edu.nus.iss.ejava2016.manager.register.RegisterManager;
 import sg.edu.nus.iss.ejava2016.model.auth.Groups;
 import sg.edu.nus.iss.ejava2016.model.auth.Users;
 import sg.edu.nus.iss.ejava2016.utils.DigestUtils;
+import sg.edu.nus.iss.ejava2016.utils.SessionUtils;
 
 /**
  *
@@ -71,24 +63,28 @@ public class UsersView implements Serializable{
     }
     
     @PermitAll
-    public String authenticate() {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        HttpServletRequest req = (HttpServletRequest)
-                fc.getExternalContext().getRequest();
+    public void authenticate() throws IOException {
         
         try{
-            req.login(userid, password);
+            SessionUtils.getRequest().login(userid, password);
+            SessionUtils.getSession().setAttribute("username", userid);
+            SessionUtils.getExternalContext()
+                    .redirect(SessionUtils.getRequestContextPath()
+                            +"/faces/secure/notes/notesmenu.xhtml?faces-redirect=true");
         }catch (Throwable t){
-            fc.addMessage(null, new FacesMessage("Incorrect Login"));
-            return (null);
+            SessionUtils.getContext().addMessage(null, new FacesMessage("Incorrect Login"));
+            // Keep Messages after redirect
+            SessionUtils.getExternalContext().getFlash().setKeepMessages(true);
+            SessionUtils.getExternalContext()
+                    .redirect(SessionUtils.getRequestContextPath()
+                            +"/faces/login.xhtml");
         }
-        req.getSession(false).setAttribute("username", userid);
         
-        return ("secure/notes/notesmenu?faces-redirect=true");
     }
     
     @PermitAll
-    public String register() {
+    public void register() throws IOException {
+        
         try {
             ut.begin();
             em.joinTransaction();
@@ -99,17 +95,19 @@ public class UsersView implements Serializable{
             Logger.getLogger(UsersView.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return ("login?faces-redirect=true");
+        SessionUtils.getExternalContext()
+                .redirect(SessionUtils.getRequestContextPath()
+                        +"/faces/login.xhtml?faces-redirect=true");
     }
     
-    public String logout(){
-        FacesContext fc = FacesContext.getCurrentInstance();
-        HttpServletRequest req = (HttpServletRequest)
-                fc.getExternalContext().getRequest();
-        HttpSession session = req.getSession();
+    public void logout() throws IOException{
+        
+        HttpSession session = SessionUtils.getSession();
 		session.invalidate();
         
-        return ("login?faces-redirect=true");
+        SessionUtils.getExternalContext()
+                .redirect(SessionUtils.getRequestContextPath()
+                        +"/faces/login.xhtml?faces-redirect=true");
     }
     
 }
