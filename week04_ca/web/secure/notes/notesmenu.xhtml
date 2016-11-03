@@ -8,9 +8,14 @@
     <h:body>
         <h:form>
             <h1>Menu</h1>
+            <h:panelGrid columns="3">
+                <h:outputText value="Hello #{request.getSession(false).getValue('username')}"/>
+                <h:outputText value="Role: DEFAULT" rendered="#{request.isUserInRole('DEFAULT')}"/>
+                <h:commandLink value="Logout" action="#{usersView.logout()}"/>
+            </h:panelGrid>
             <h:panelGrid columns="2">
-                <h:commandLink value="Create" action="notescreate"/>
-                <h:commandLink value="Posted Notes" action="notesposted"/>
+                <h:commandLink value="Create" action="notescreate" rendered="#{request.isUserInRole('DEFAULT')}"/>
+                <h:commandLink value="Posted Notes" action="notesposted" rendered="#{request.isUserInRole('DEFAULT')}"/>
             </h:panelGrid>
         </h:form>
     </h:body>

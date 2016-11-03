@@ -18,8 +18,11 @@ create table groups (
 
 create table notes (
 	notesid varchar(32) not null,
-	userid varchar(32) not null,
+	title varchar(32) not null,
+	created timestamp not null,
+	category varchar(32) not null,
 	description varchar (2048) not null,
+	userid varchar(32) not null,
 	primary key (notesid, userid)
 ) engine=InnoDB default charset=utf8;
 /*

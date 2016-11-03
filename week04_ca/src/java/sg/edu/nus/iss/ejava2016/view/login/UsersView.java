@@ -5,6 +5,7 @@
  */
 package sg.edu.nus.iss.ejava2016.view.login;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
@@ -12,6 +13,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -20,6 +23,8 @@ import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -38,6 +43,7 @@ import sg.edu.nus.iss.ejava2016.utils.DigestUtils;
  */
 @ViewScoped 
 @ManagedBean
+@RolesAllowed({"DEFAULT"})
 public class UsersView implements Serializable{
     
     @PersistenceContext EntityManager em;
@@ -64,6 +70,7 @@ public class UsersView implements Serializable{
         this.password = password;
     }
     
+    @PermitAll
     public String authenticate() {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest)
@@ -75,21 +82,34 @@ public class UsersView implements Serializable{
             fc.addMessage(null, new FacesMessage("Incorrect Login"));
             return (null);
         }
-        return ("secure/notes/notesmenu");
+        req.getSession(false).setAttribute("username", userid);
+        
+        return ("secure/notes/notesmenu?faces-redirect=true");
     }
     
+    @PermitAll
     public String register() {
         try {
             ut.begin();
             em.joinTransaction();
             em.persist(new Users(userid, DigestUtils.sha256hex(password)));
-            em.persist(new Groups("NOT", userid));
+            em.persist(new Groups("DEFAULT", userid));
             ut.commit();
         } catch (NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
             Logger.getLogger(UsersView.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return ("login");
+        return ("login?faces-redirect=true");
+    }
+    
+    public String logout(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        HttpServletRequest req = (HttpServletRequest)
+                fc.getExternalContext().getRequest();
+        HttpSession session = req.getSession();
+		session.invalidate();
+        
+        return ("login?faces-redirect=true");
     }
     
 }
