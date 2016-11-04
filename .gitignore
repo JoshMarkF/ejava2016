@@ -14,3 +14,7 @@ week04_ca/nbproject/project.properties
 week04_ca/nbproject/project.xml
 week04_ca/nbproject/rest-build.xml
 week04_ca/src/conf/persistence.xml
+/week4_ca_personal/build/
+/week4_ca_personal/dist/
+/week4_ca_personal/nbproject/private/
+/week4_ca_personal/web/bower_components/
