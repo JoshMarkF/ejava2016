@@ -9,7 +9,6 @@ import java.util.Optional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import sg.edu.nus.iss.ejava2016.model.auth.Groups;
-import sg.edu.nus.iss.ejava2016.model.auth.GroupsPK;
 import sg.edu.nus.iss.ejava2016.model.auth.Users;
 
 /**

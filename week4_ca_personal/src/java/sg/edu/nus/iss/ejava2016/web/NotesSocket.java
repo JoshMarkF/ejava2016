@@ -6,20 +6,16 @@
 package sg.edu.nus.iss.ejava2016.web;
 
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
