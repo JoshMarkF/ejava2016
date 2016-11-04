@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.ejb.EJB;
 import javax.enterprise.concurrent.ManagedScheduledExecutorService;
@@ -16,6 +18,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
 import javax.websocket.Session;
@@ -96,11 +99,18 @@ public class NotesSocket {
 		}, 3, 2, TimeUnit.SECONDS);
     }
     
+    @OnClose
+    public void onclose(Session session) {
+        try {
+            session.close();
+        } catch (IOException ex) {
+            Logger.getLogger(NotesSocket.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     @OnMessage
     public void message(final Session session, final String msg) {
             setType(msg);
-
-
     }
     
 }

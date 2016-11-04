@@ -98,6 +98,10 @@ public class NotesView {
     }
     
     public List<Notes> getUserNotes(){
-        return (notesManager.findByUserId(username).get());
+        
+        List<Notes> sortedList = notesManager.findByUserId(username).get();
+        sortedList.sort((n1,n2) -> n2.getCreated().compareTo(n1.getCreated()));
+        
+        return (sortedList);
     }
 }

@@ -8,7 +8,7 @@
     </h:head>
     <h:body>
         <h:form>
-            <h:panelGrid columns="3">
+            <h:panelGrid columns="1">
                 <h:outputText value="Hello #{request.getSession(false).getValue('username')}"/>
                 <h:outputText value="Role: DEFAULT" rendered="#{request.isUserInRole('DEFAULT')}"/>
                 <h:commandLink value="Logout" action="#{usersView.logout()}"/>
