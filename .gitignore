@@ -20,3 +20,5 @@ week04_ca/src/conf/persistence.xml
 /week4_ca_personal/web/bower_components/
 week4_ca_personal/nbproject/ant-deploy.xml
 /week05_ca/nbproject/private/
+week05_ca/nbproject/ant-deploy.xml
+week05_ca/nbproject/project.properties
