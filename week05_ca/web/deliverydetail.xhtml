@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+      <h:body>
+        <h:form id="pods">
+            <h:dataTable var="i" value="#{deliveryView.allDeliveries}">
+				<h:column>
+                                    <f:facet name="header">Package ID</f:facet>
+                                    <h:outputText value="#{i.pkgId}"/>
+				</h:column>
+                                <h:column>
+                                        <f:facet name="header">Name</f:facet>
+                                        <h:outputText value="#{i.name}"/>
+				</h:column>
+                                <h:column>
+                                        <f:facet name="header">Address</f:facet>
+                                        <h:outputText value="#{i.address}"/>
+				</h:column>
+                                <h:column>
+                                        <f:facet name="header">Phone</f:facet>
+                                        <h:outputText value="#{i.phone}"/>
+				</h:column>
+                                <h:column>
+                                        <f:facet name="header">Create Date</f:facet>
+                                        <h:outputText value="#{i.createDate}"/>
+				</h:column>
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
+

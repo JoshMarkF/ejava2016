@@ -76,4 +76,8 @@ public class DeliveryView {
                 .redirect(SessionUtils.getRequestContextPath()
                         +"/faces/index.xhtml?faces-redirect=true");
     }
+    
+    public List<Delivery> getAllDeliveries(){
+        return deliveryManager.getAll().get();
+    }
 }
