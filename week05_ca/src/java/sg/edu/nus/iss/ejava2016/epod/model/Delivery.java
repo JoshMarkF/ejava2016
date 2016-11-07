@@ -8,6 +8,8 @@ package sg.edu.nus.iss.ejava2016.epod.model;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
+import javax.json.Json;
+import javax.json.JsonObject;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -69,8 +71,6 @@ public class Delivery implements Serializable {
     @Column(name = "create_date", nullable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createDate;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pkgId")
-    private Collection<Pod> podCollection;
 
     public Delivery() {
     }
@@ -127,15 +127,6 @@ public class Delivery implements Serializable {
         this.createDate = createDate;
     }
 
-    @XmlTransient
-    public Collection<Pod> getPodCollection() {
-        return podCollection;
-    }
-
-    public void setPodCollection(Collection<Pod> podCollection) {
-        this.podCollection = podCollection;
-    }
-
     @Override
     public int hashCode() {
         int hash = 0;
@@ -160,5 +151,13 @@ public class Delivery implements Serializable {
     public String toString() {
         return "sg.edu.nus.iss.ejava2016.epod.model.Delivery[ pkgId=" + pkgId + " ]";
     }
+    
+    public JsonObject toJSON() {
+            return (Json.createObjectBuilder()
+                .add("name", name)
+                .add("address", address))
+                .add("phone", phone)
+                .build();
+	}
     
 }

@@ -7,11 +7,12 @@ package sg.edu.nus.iss.ejava2016.epod.manager;
 
 import java.util.List;
 import java.util.Optional;
-import javax.ejb.EJB;
+import java.util.UUID;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import sg.edu.nus.iss.ejava2016.epod.model.Delivery;
 import sg.edu.nus.iss.ejava2016.epod.model.Pod;
 
@@ -20,24 +21,23 @@ import sg.edu.nus.iss.ejava2016.epod.model.Pod;
  * @author sanja
  */
 @Stateless
-public class DeliveryManager {
+@Transactional(Transactional.TxType.REQUIRES_NEW)
+public class PodManager {
     
     @PersistenceContext private EntityManager em;
     
-    public Integer add(Delivery delivery){
-        em.persist(delivery);
-        em.flush();
-        return delivery.getPkgId();
+    public void add(Pod pod){
+        em.persist(pod);
     }
     
-    public Optional<Delivery> find(final Integer pkgId){
-        return(Optional.ofNullable(em.find(Delivery.class, pkgId)));
+    public Optional<Pod> find(final String pid){
+        return(Optional.ofNullable(em.find(Pod.class, pid)));
     }
     
-    public Optional<List<Delivery>> getAll(){
+    public Optional<List<Pod>> getAll(){
         
-        TypedQuery<Delivery> query = em.createNamedQuery(
-                "Delivery.findAll", Delivery.class);
+        TypedQuery<Pod> query = em.createNamedQuery(
+                "Pod.findAll", Pod.class);
         
         return(Optional.ofNullable(query.getResultList()));
     }
