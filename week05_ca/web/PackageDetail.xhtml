@@ -6,7 +6,18 @@
         <title>Enter your package details!</title>
     </h:head>
     <h:body>
-        Hello from Facelets
+        <h2>Enter your package details!</h2>
+        <h:form>
+            <h:panelGrid columns="2">
+                <h:outputText value="Name"/>
+                <h:inputText value="#{deliveryView.name}"/>
+                <h:outputText value="Address"/>
+                <h:inputText value="#{deliveryView.address}"/>
+                <h:outputText value="Phone"/>
+                <h:inputText value="#{deliveryView.phone}"/>
+                <h:commandButton value="Submit" action="#{deliveryView.add()}"/>
+            </h:panelGrid>
+        </h:form>
     </h:body>
 </html>
 
