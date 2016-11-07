@@ -26,6 +26,8 @@ public class PodView {
     private List<Pod> podList;
     
     public List<Pod> getPods(){
+        
+        
         return podManager.getAll().get();
     }
 

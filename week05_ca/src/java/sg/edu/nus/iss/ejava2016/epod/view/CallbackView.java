@@ -32,12 +32,13 @@ public class CallbackView extends HttpServlet{
         
         System.out.println("podID: "+podId);
         System.out.println("ackID: "+ackID);
-        
-        Optional<Pod> opt = podManager.find(Integer.parseInt(podId));
-        if(opt.isPresent()){
-            Pod pod = opt.get();
-            pod.setAckId(ackID);
-            podManager.update(pod);
+        if(podId != null || ackID != null){
+            Optional<Pod> opt = podManager.find(Integer.parseInt(podId));
+            if(opt.isPresent()){
+                Pod pod = opt.get();
+                pod.setAckId(ackID);
+                podManager.update(pod);
+            }
         }
     }
     
