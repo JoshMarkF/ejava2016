@@ -1,4 +1,4 @@
-package sg.edu.nus.iss.ejava2016.corsfilter;
+package sg.edu.nus.iss.ejava2016.epod.corsfilter;
 
 import java.io.IOException;
 import javax.servlet.DispatcherType;
