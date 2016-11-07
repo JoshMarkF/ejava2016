@@ -53,9 +53,15 @@ public class MobileResource {
 
             JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
         
-            opt.get().stream()
+            /*opt.get().stream()
                     .map(c -> {return(c.toDeliveryJSON());})
-                    .forEach(j -> {arrBuilder.add(j);});
+                    .forEach(j -> {arrBuilder.add(j);});*/
+            
+            for(Pod p: opt.get()){
+                if(p.getAckId() == null){
+                    arrBuilder.add(p.toDeliveryJSON());
+                }
+            }
 
             return (Response.ok(arrBuilder.build()).build());
     }

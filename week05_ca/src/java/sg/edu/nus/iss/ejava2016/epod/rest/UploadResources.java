@@ -4,15 +4,15 @@
  * and open the template in the editor.
  */
 package sg.edu.nus.iss.ejava2016.epod.rest;
-
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.Optional;
 import javax.ejb.EJB;
-import javax.enterprise.context.RequestScoped;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -20,12 +20,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.client.Invocation;
+import org.glassfish.jersey.media.multipart.FormDataMultiPart;
+import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import sg.edu.nus.iss.ejava2016.epod.manager.PodManager;
 import sg.edu.nus.iss.ejava2016.epod.model.Pod;
 
@@ -57,6 +63,8 @@ public class UploadResources extends HttpServlet{
             pod.setDeliveryDate(new Date(time));
 
             podManager.update(pod);
+            
+            pushToHQ(pod);
         }
     }
     
@@ -71,6 +79,46 @@ public class UploadResources extends HttpServlet{
             } 
         }
         return (buffer); 
+    }
+    
+    private void pushToHQ(Pod pod) throws IOException{
+        Client client = ClientBuilder.newBuilder()
+				.register(MultiPartFeature.class)
+				.build();
+
+		MultiPart part = new MultiPart();
+                
+                FileOutputStream fos = new FileOutputStream("temp.jpg");
+                fos.write(pod.getImage());
+                fos.close();
+
+		FileDataBodyPart imgPart = new FileDataBodyPart("image", 
+				new File("temp.jpg"),
+				MediaType.APPLICATION_OCTET_STREAM_TYPE);
+		imgPart.setContentDisposition(
+				FormDataContentDisposition.name("image")
+				.fileName("temp.jpg").build());
+
+		MultiPart formData = new FormDataMultiPart()
+				.field("teamId", "cd485d72", MediaType.TEXT_PLAIN_TYPE)
+				.field("podId", pod.getPodId(), MediaType.TEXT_PLAIN_TYPE)
+                                .field("callback", "http://10.10.2.83:8080/week05_ca/callback", MediaType.TEXT_PLAIN_TYPE)
+                                .field("note", pod.getNote(), MediaType.TEXT_PLAIN_TYPE)
+				.bodyPart(imgPart);
+		formData.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
+
+
+		//part.bodyPart(new FileDataBodyPart("image", 
+				//new File("/home/cmlee/Pictures/ca3.png")));
+				
+		WebTarget target = client.target("http://10.10.0.50:8080/epod/upload");
+		Invocation.Builder inv = target.request();
+
+		System.out.println(">>> part: " + formData);
+
+		Response callResp = inv.post(Entity.entity(formData, formData.getMediaType()));
+
+		System.out.println(">> call resp:" + callResp.getStatus());
     }
     
 }
